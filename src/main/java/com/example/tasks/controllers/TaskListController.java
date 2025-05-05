@@ -1,0 +1,35 @@
+package com.example.tasks.controllers;
+
+import com.example.tasks.domain.dtos.TaskListDto;
+import com.example.tasks.domain.entities.TaskList;
+import com.example.tasks.mappers.TaskListMapper;
+import com.example.tasks.services.TaskListService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/task-lists")
+@RequiredArgsConstructor
+public class TaskListController {
+
+    private final TaskListService taskListService;
+
+    private final TaskListMapper taskListMapper;
+
+    @GetMapping
+    public List<TaskListDto> listTaskLists(){
+        return taskListService.listTaskLists()
+                .stream()
+                .map(this.taskListMapper::toDto)
+                .toList();
+    }
+
+    @PostMapping
+    public TaskListDto crateTaskList(@RequestBody TaskListDto dto){
+        TaskList taskList = taskListService.createTaskList(this.taskListMapper.fromDto(dto));
+        return this.taskListMapper.toDto(taskList);
+    }
+
+}
