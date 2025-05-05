@@ -2,15 +2,16 @@ package com.example.tasks.controllers;
 
 import com.example.tasks.domain.dtos.TaskDto;
 import com.example.tasks.domain.entities.Task;
+import com.example.tasks.domain.entities.TaskPriority;
+import com.example.tasks.domain.entities.TaskStatus;
 import com.example.tasks.mappers.TaskMapper;
 import com.example.tasks.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,10 +25,14 @@ public class TaskController {
 
     private final TaskMapper taskMapper;
 
-    @Operation(summary = "Retorna todas as tarefas associadas à lista especificada")
+    @Operation(summary = "Retorna todas as tarefas associadas à lista especificada utilizando filtros de busca")
     @GetMapping
-    public List<TaskDto> listTasks(@PathVariable("taskListId")UUID taskListId){
-        return this.taskService.listTasks(taskListId)
+    public List<TaskDto> listTasks(
+            @PathVariable("taskListId") UUID taskListId,
+            @RequestParam(required = false) TaskStatus status,
+            @RequestParam(required = false) TaskPriority priority,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate dueDate){
+        return this.taskService.listTasks(taskListId, status, priority, dueDate)
                 .stream()
                 .map(this.taskMapper::toDto)
                 .toList();

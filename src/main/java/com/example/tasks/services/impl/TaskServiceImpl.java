@@ -6,11 +6,14 @@ import com.example.tasks.domain.entities.TaskPriority;
 import com.example.tasks.domain.entities.TaskStatus;
 import com.example.tasks.repositories.TaskListRepository;
 import com.example.tasks.repositories.TaskRepository;
+import com.example.tasks.repositories.specs.TaskSpecifications;
 import com.example.tasks.services.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -26,8 +29,15 @@ public class TaskServiceImpl implements TaskService {
     private final TaskListRepository taskListRepository;
 
     @Override
-    public List<Task> listTasks(UUID taskListId) {
-        return this.taskRepository.findByTaskListId(taskListId);
+    public List<Task> listTasks(UUID taskListId, TaskStatus status, TaskPriority priority, LocalDate dueDate) {
+
+        Specification<Task> spec = Specification.where(TaskSpecifications.hasTaskListId(taskListId));
+
+        if(status != null) spec = spec.and(TaskSpecifications.hasStatus(status));
+        if(priority != null) spec = spec.and(TaskSpecifications.hasPriority(priority));
+        if(dueDate != null) spec = spec.and(TaskSpecifications.hasDueDateBeforeOrEqual(dueDate));
+
+        return taskRepository.findAll(spec);
     }
 
     @Transactional
