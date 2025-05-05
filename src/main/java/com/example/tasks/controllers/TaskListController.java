@@ -39,4 +39,10 @@ public class TaskListController {
         return this.taskListMapper.toDto(taskList);
     }
 
+    @PutMapping("/{taskListId}")
+    public TaskListDto updateTaskList(@PathVariable("taskListId")UUID id, @RequestBody TaskListDto dto){
+        TaskList updatedTask = taskListService.updateTaskList(id, this.taskListMapper.fromDto(dto));
+        return this.taskListMapper.toDto(updatedTask);
+    }
+
 }
