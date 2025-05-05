@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/task-lists")
@@ -24,6 +26,11 @@ public class TaskListController {
                 .stream()
                 .map(this.taskListMapper::toDto)
                 .toList();
+    }
+
+    @GetMapping("/{taskListId}")
+    public Optional<TaskListDto> getTaskList(@PathVariable("taskListId")UUID id){
+        return this.taskListService.getTaskList(id).map(this.taskListMapper::toDto);
     }
 
     @PostMapping
