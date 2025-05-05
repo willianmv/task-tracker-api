@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: tasks
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tasksdb
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update
