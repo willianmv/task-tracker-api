@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({IllegalAccessException.class})
+    @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ErrorResponse> handleExceptions(RuntimeException ex, WebRequest request){
 
         ErrorResponse errorResponse = new ErrorResponse(
