@@ -1,4 +1,4 @@
-package com.example.tasks.domain.dtos;
+package com.example.tasks.domain.dtos.errors;
 
 public record ErrorResponse(
         int status,
