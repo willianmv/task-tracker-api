@@ -46,12 +46,8 @@ public class TaskServiceImpl implements TaskService {
         if(task.getId() != null){
             throw new IllegalArgumentException("Task already has a ID.");
         }
-        if(task.getTitle() == null || task.getTitle().isBlank()){
-            throw new IllegalArgumentException("Task must have a title.");
-        }
 
         TaskPriority taskPriority = Optional.ofNullable(task.getPriority()).orElse(TaskPriority.MEDIUM);
-        TaskStatus taskStatus = TaskStatus.OPEN;
 
         TaskList taskList = taskListRepository.findById(taskListId)
                 .orElseThrow(() -> new IllegalArgumentException("Task List not found."));
@@ -62,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
                 task.getTitle(),
                 task.getDescription(),
                 task.getDueDate(),
-                taskStatus,
+                task.getStatus(),
                 taskPriority,
                 taskList,
                 now, now);
@@ -78,17 +74,8 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public Task updateTask(UUID taskListId, UUID taskId, Task task) {
-        if(task.getId() == null){
-            throw new IllegalArgumentException("Task must have an ID.");
-        }
         if(!Objects.equals(taskId, task.getId())){
             throw new IllegalArgumentException("Task IDs do not match.");
-        }
-        if(task.getStatus() == null){
-            throw new IllegalArgumentException("Task must have a status.");
-        }
-        if(task.getPriority() == null){
-            throw new IllegalArgumentException("Task must have a priority.");
         }
 
         Task existingTask = taskRepository.findByTaskListIdAndId(taskListId, taskId)
