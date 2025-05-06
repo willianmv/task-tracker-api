@@ -2,7 +2,6 @@ package com.example.tasks.mappers.impl;
 
 import com.example.tasks.domain.dtos.CreateTaskDto;
 import com.example.tasks.domain.dtos.ResponseTaskDto;
-import com.example.tasks.domain.dtos.TaskDto;
 import com.example.tasks.domain.dtos.UpdateTaskDto;
 import com.example.tasks.domain.entities.Task;
 import com.example.tasks.domain.entities.TaskStatus;

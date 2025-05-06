@@ -1,6 +1,8 @@
 package com.example.tasks.mappers.impl;
 
-import com.example.tasks.domain.dtos.TaskListDto;
+import com.example.tasks.domain.dtos.CreateTaskListDto;
+import com.example.tasks.domain.dtos.ResponseTaskListDto;
+import com.example.tasks.domain.dtos.UpdateTaskListDto;
 import com.example.tasks.domain.entities.Task;
 import com.example.tasks.domain.entities.TaskList;
 import com.example.tasks.domain.entities.TaskStatus;
@@ -19,22 +21,27 @@ public class TaskListMapperImpl implements TaskListMapper {
     private final TaskMapper taskMapper;
 
     @Override
-    public TaskList fromDto(TaskListDto taskListDto) {
+    public TaskList fromCreateListDto(CreateTaskListDto dto) {
         return new TaskList(
-                taskListDto.id(),
-                taskListDto.title(),
-                taskListDto.description(),
-
-                Optional.ofNullable(taskListDto.tasks())
-                        .map(tasks -> tasks.stream()
-                                .map(taskMapper::fromDto).toList()).orElse(null),
                 null,
-                null);
+                dto.title(),
+                dto.description(),
+                null,
+                null, null);
     }
 
     @Override
-    public TaskListDto toDto(TaskList taskList) {
-        return new TaskListDto(
+    public TaskList fromUpdateListDto(UpdateTaskListDto dto) {
+        return new TaskList(
+                dto.id(),
+                dto.title(),
+                dto.description(),
+                null, null, null);
+    }
+
+    @Override
+    public ResponseTaskListDto toResponseListDto(TaskList taskList) {
+        return new ResponseTaskListDto(
                 taskList.getId(),
                 taskList.getTitle(),
                 taskList.getDescription(),
@@ -45,9 +52,12 @@ public class TaskListMapperImpl implements TaskListMapper {
 
                 calculateTaskListProgress(taskList.getTasks()),
 
+                taskList.getCreated(),
+                taskList.getUpdated(),
+
                 Optional.ofNullable(taskList.getTasks())
                         .map(tasks -> tasks.stream()
-                                .map(taskMapper::toDto).toList())
+                                .map(this.taskMapper::toResponseDto).toList())
                         .orElse(null));
     }
 

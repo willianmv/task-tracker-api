@@ -20,7 +20,7 @@ public record UpdateTaskDto(
         String title,
 
         @NotBlank(message = "Campo descrição é obrigatório")
-        @Size(min = 3, max = 100, message = "Título deve ter entre 3 e 100 caracteres")
+        @Size(min = 3, max = 100, message = "Descrição deve ter entre 3 e 100 caracteres")
         String description,
 
         @NotNull(message = "Campo data de vencimento é obrigatória")

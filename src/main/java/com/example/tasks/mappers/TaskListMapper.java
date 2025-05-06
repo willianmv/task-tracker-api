@@ -1,12 +1,15 @@
 package com.example.tasks.mappers;
 
-import com.example.tasks.domain.dtos.TaskListDto;
+import com.example.tasks.domain.dtos.CreateTaskListDto;
+import com.example.tasks.domain.dtos.ResponseTaskListDto;
+import com.example.tasks.domain.dtos.UpdateTaskListDto;
 import com.example.tasks.domain.entities.TaskList;
 
 public interface TaskListMapper {
 
-    TaskList fromDto(TaskListDto taskListDto);
+    TaskList fromCreateListDto(CreateTaskListDto dto);
 
-    TaskListDto toDto(TaskList taskList);
+    TaskList fromUpdateListDto(UpdateTaskListDto dto);
 
+    ResponseTaskListDto toResponseListDto(TaskList taskList);
 }

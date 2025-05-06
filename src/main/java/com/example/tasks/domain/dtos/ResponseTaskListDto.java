@@ -1,14 +1,17 @@
 package com.example.tasks.domain.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record TaskListDto(
+public record ResponseTaskListDto(
         UUID id,
         String title,
         String description,
         Integer count,
         Double progress,
-        List<TaskDto> tasks
+        LocalDateTime created,
+        LocalDateTime updated,
+        List<ResponseTaskDto> tasks
 ) {
 }

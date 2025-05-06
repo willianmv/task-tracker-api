@@ -29,9 +29,6 @@ public class TaskListServiceImpl implements TaskListService {
         if(taskList.getId() != null){
             throw new IllegalArgumentException("Task list already has an ID.");
         }
-        if(taskList.getTitle() == null || taskList.getTitle().isBlank()){
-            throw new IllegalArgumentException("Task list title must be present.");
-        }
 
         LocalDateTime now = LocalDateTime.now();
         return taskListRepository.save(new TaskList(
@@ -51,9 +48,6 @@ public class TaskListServiceImpl implements TaskListService {
     @Transactional
     @Override
     public TaskList updateTaskList(UUID id, TaskList taskList) {
-        if(taskList.getId() == null){
-            throw new IllegalArgumentException("Task list must hava an ID.");
-        }
         if(!Objects.equals(id, taskList.getId())){
             throw new IllegalArgumentException("Attempting to change task list ID, this is not permitted.");
         }
